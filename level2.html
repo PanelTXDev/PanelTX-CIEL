@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel TX-CIEL - Accès Sécurisé</title>
+    <meta name="description" content="Panel TX-CIEL - YWRtaW5faGFja2Vy">
+    <meta name="keywords" content="CIEL, cybersécurité, formation, alternance">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1a202c;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 48px;
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            /* Check meta tags and CSS content properties for encoded data */
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            margin-bottom: 8px;
+            text-shadow: none;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 32px;
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.025em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            color: #2d3748;
+            font-family: inherit;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            margin-bottom: 4px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: #ffffff;
+        }
+
+        .form-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .message {
+            text-align: center;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+            font-size: 14px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success {
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid #48bb78;
+            color: #22543d;
+        }
+
+        .error {
+            background: rgba(245, 101, 101, 0.1);
+            border: 1px solid #f56565;
+            color: #742a2a;
+        }
+
+        .hint {
+            display: none;
+        }
+
+        .debug-panel {
+            display: none;
+        }
+
+        .debug-panel h3 {
+            color: #3b82f6;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .debug-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .debug-btn {
+            background: rgba(45, 55, 72, 0.6);
+            border: 1px solid rgba(74, 85, 104, 0.4);
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .debug-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .debug-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .debug-input {
+            flex: 1;
+            min-width: 150px;
+            padding: 8px 12px;
+            background: rgba(45, 55, 72, 0.6);
+            border: 1px solid rgba(74, 85, 104, 0.4);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: inherit;
+            font-size: 0.8rem;
+        }
+
+        .debug-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+
+        .auth {
+            content: "c3VwM3JzZWNyM3RwYXNz";
+            display: none;
+        }
+
+        #requestOutput {
+            margin-top: 15px;
+            color: #22c55e;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 6px;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        #requestOutput pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 25px;
+                margin: 10px;
+            }
+            .login-title {
+                font-size: 2rem;
+            }
+            .debug-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+            .debug-input-group {
+                flex-direction: column;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="auth"></div>
+        <h1 class="login-title">Panel TX-CIEL</h1>
+        <p class="login-subtitle">Portail d'accès sécurisé à votre espace professionnel</p>
+
+        <div style="text-align: center; margin-bottom: 24px;">
+            <button onclick="window.location.href='../'" style="background: rgba(113, 128, 150, 0.1); border: 1px solid #e2e8f0; color: #718096; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; transition: all 0.2s ease;">← Retour à l'accueil</button>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" class="form-input" placeholder="Votre identifiant professionnel" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">Mot de passe</label>
+                <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required>
+            </div>
+            <button type="submit" class="login-btn">Se connecter</button>
+        </form>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        function decodeBase64(str) {
+            try {
+                return atob(str);
+            } catch (e) {
+                return "Erreur de déchiffrement";
+            }
+        }
+
+        async function validateLogin(username, password) {
+            // Récupère les credentials cachés
+            const encodedUser = document.querySelector('meta[name="description"]').getAttribute('content').split(' - ')[1];
+            const encodedPass = getComputedStyle(document.querySelector('.auth')).getPropertyValue('content').replace(/"/g, '');
+
+            if (username === decodeBase64(encodedUser) && password === decodeBase64(encodedPass)) {
+                try {
+                    const response = await fetch("./api_success.json");
+                    const data = await response.json();
+                    return { success: true, message: data.message + " " + data.token };
+                } catch (e) {
+                    return { success: false, message: "Erreur de connexion au serveur" };
+                }
+            }
+
+            try {
+                const response = await fetch("./api.json");
+                const data = await response.json();
+                return { success: false, message: "❌ " + data.auth.message };
+            } catch (e) {
+                return { success: false, message: "Erreur de connexion au serveur" };
+            }
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const message = document.getElementById("message");
+
+            const result = await validateLogin(username, password);
+            message.textContent = result.message;
+            message.className = "message " + (result.success ? "success" : "error");
+            message.style.display = "block";
+
+            if (!result.success) {
+                setTimeout(() => { message.style.display = "none"; }, 8000);
+            }
+        });
+
+        window.decodeBase64 = decodeBase64;
+    </script>
+</body>
+</html>

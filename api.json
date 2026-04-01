@@ -1,0 +1,9 @@
+{
+  "auth": {
+    "status": "error",
+    "message": "Invalid credentials",
+    "code": 401
+  },
+  "status": "active",
+  "version": "1.0"
+}

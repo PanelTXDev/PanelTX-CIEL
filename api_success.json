@@ -1,0 +1,10 @@
+{
+  "authenticated": true,
+  "user": {
+    "username": "admin_hacker",
+    "role": "administrator"
+  },
+  "token": "FLAG{d3c0d3d_cr3d3nt14ls_m4st3r}",
+  "message": "🎉 Connexion réussie !",
+  "expires_in": 3600
+}
