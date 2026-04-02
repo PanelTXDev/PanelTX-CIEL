@@ -11,7 +11,8 @@ export default function Header({ activeSection, setActiveSection }: HeaderProps)
 
   const handleNavClick = (item: typeof navItems[0]) => {
     if (item.isExternal) {
-      window.open('/public/ctf.html', '_blank');
+      const ctfPath = process.env.NODE_ENV === 'production' ? '/PanelTX-CIEL/ctf.html' : '/public/ctf.html';
+      window.open(ctfPath, '_blank');
     } else {
       scrollToSection(item.id);
     }

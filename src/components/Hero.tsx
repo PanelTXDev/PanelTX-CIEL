@@ -43,7 +43,10 @@ export default function Hero() {
               Découvrir nos formations
             </button>
             <button
-              onClick={() => window.open('/public/ctf.html', '_blank')}
+              onClick={() => {
+                const ctfPath = process.env.NODE_ENV === 'production' ? '/PanelTX-CIEL/ctf.html' : '/public/ctf.html';
+                window.open(ctfPath, '_blank');
+              }}
               className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors"
             >
               🛡️ CTF
