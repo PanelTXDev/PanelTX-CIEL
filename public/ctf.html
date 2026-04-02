@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture The Flag - CIEL Cybersecurity</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #0a0a0a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 65, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 0, 128, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00ff41, #00bfff, #ff0080);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: 8px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff41, #00bfff);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 20px;
+        }
+
+        .flag-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flag-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .flag-card:hover::before {
+            left: 100%;
+        }
+
+        .flag-card:hover {
+            border-color: rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+        }
+
+        .flag-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #00ff41;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flag-description {
+            color: #c0c0c0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .flag-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .flag-input:focus {
+            outline: none;
+            border-color: #00ff41;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+        }
+
+        .submit-btn {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #00ff41, #00bfff);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .success {
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+        }
+
+        .error {
+            background: rgba(255, 65, 65, 0.1);
+            border: 1px solid #ff4141;
+            color: #ff4141;
+        }
+
+        .hint {
+            color: #ffff00;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 20px 15px;
+            }
+            .flag-card {
+                padding: 20px;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+            .submit-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🏴‍☠️ Capture The Flag</h1>
+            <p class="subtitle">Terminale Level - Cybersecurity Challenge</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="window.location.href='../'" style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family: inherit;">🏠 Retour Home</button>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="flag-card">
+            <h2 class="flag-title">🔍 Flag 1 - Facile</h2>
+            <p class="flag-description">Ouvre les outils développeur (F12) et explore la console JavaScript pour découvrir le premier flag caché.</p>
+            <div class="input-group">
+                <input type="text" class="flag-input" id="flag1" placeholder="FLAG{...}">
+                <button class="submit-btn" onclick="checkFlag1()">Valider</button>
+            </div>
+            <div class="message" id="msg1"></div>
+        </div>
+
+        <div class="flag-card">
+            <h2 class="flag-title">🚀 Flag 2 - Moyen</h2>
+            <p class="flag-description">Ce flag nécessite une investigation plus approfondie. Inspectez le code source HTML pour trouver des indices menant à des endpoints simulés.</p>
+            <!-- Indice: Utilisez simulateFetch('/secret/endpoint.json') dans la console -->
+            <div class="input-group">
+                <input type="text" class="flag-input" id="flag2" placeholder="FLAG{...}">
+                <button class="submit-btn" onclick="checkFlag2()">Valider</button>
+            </div>
+            <div class="message" id="msg2"></div>
+        </div>
+    </div>
+
+    <script>
+        console.log("FLAG{insp3ct3ur_c0ns0l3}");
+
+        let flagsFound = 0;
+
+        // Simulated endpoints
+        const simulatedEndpoints = {
+            '/secret/endpoint.json': {
+                "next": "L2hpZGRlbi9mbGFnLnR4dA=="  // base64 of /hidden/flag.txt
+            },
+            '/hidden/flag.txt': "Pour révéler le flag, effectuez une requête avec le header X-Secret: reveal",
+            // Level 2 endpoints - many fakes
+            '/fake/flag1.json': "FLAG{f4k3_fl4g_1}",
+            '/fake/flag2.json': "FLAG{f4k3_fl4g_2}",
+            '/fake/flag3.json': "FLAG{f4k3_fl4g_3}",
+            '/decoy/endpoint.json': "Ceci n'est pas le bon chemin...",
+            '/trap/door.json': "FLAG{tr4p_d00r}",
+            '/real/flag.json': "FLAG{n3tw0rk_m4st3r_p0st_r3qu3st}"  // Only accessible via POST with X-Auth: master
+        };
+
+        function checkFlag1() {
+            const input = document.getElementById('flag1').value.trim();
+            const msg = document.getElementById('msg1');
+            if (input === 'FLAG{insp3ct3ur_c0ns0l3}') {
+                msg.textContent = '🎉 Félicitations ! Flag 1 trouvé. Vous êtes un véritable inspecteur de console !';
+                msg.className = 'message success';
+                msg.style.display = 'block';
+                flagsFound++;
+                updateProgress();
+                document.getElementById('flag1').disabled = true;
+                document.getElementById('flag1').style.opacity = '0.6';
+            } else {
+                msg.textContent = '❌ Flag incorrect. Vérifiez attentivement la console développeur.';
+                msg.className = 'message error';
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 3000);
+            }
+        }
+
+        function checkFlag2() {
+            const input = document.getElementById('flag2').value.trim();
+            const msg = document.getElementById('msg2');
+            if (input === 'FLAG{cr0ss_0r1g1n_r3qu3st_m4st3r}') {
+                msg.textContent = '🎉 Bravo ! Flag 2 maîtrisé. Vous êtes un expert en requêtes cross-origin !';
+                msg.className = 'message success';
+                msg.style.display = 'block';
+                flagsFound++;
+                updateProgress();
+                document.getElementById('flag2').disabled = true;
+                document.getElementById('flag2').style.opacity = '0.6';
+            } else {
+                msg.textContent = '❌ Flag incorrect. Suivez les indices cachés dans le code source.';
+                msg.className = 'message error';
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 3000);
+            }
+        }
+
+        function simulateFetch(url, options = {}) {
+            const method = options.method || 'GET';
+            const headers = options.headers || {};
+            
+            if (url === '/secret/endpoint.json') {
+                return simulatedEndpoints[url];
+            } else if (url === '/hidden/flag.txt') {
+                if (headers['X-Secret'] === 'reveal') {
+                    return 'FLAG{cr0ss_0r1g1n_r3qu3st_m4st3r}';
+                } else {
+                    return simulatedEndpoints[url];
+                }
+            } else if (url === '/real/flag.json') {
+                if (method === 'POST' && headers['X-Auth'] === 'master') {
+                    return simulatedEndpoints[url];
+                } else {
+                    return "Accès refusé. Vérifiez la méthode et les headers.";
+                }
+            } else if (simulatedEndpoints[url]) {
+                return simulatedEndpoints[url];
+            }
+            return "Endpoint non trouvé.";
+        }
+
+        // Make it global for console use
+        window.simulateFetch = simulateFetch;
+
+        function updateProgress() {
+            const progress = (flagsFound / 2) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            if (flagsFound === 2) {
+                setTimeout(() => {
+                    window.location.href = '/public/level2.html';
+                }, 2000); // Délai pour voir le message de succès
+            }
+        }
+    </script>
+</body>
+</html>

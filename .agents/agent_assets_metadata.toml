@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "vsSAc2lo4FKEMY23eEDeS"
+uri = "file://src/assets/images/bac-pro-ciel.png"
+type = "image"
+title = "bac pro ciel lab"
+
+[[generated]]
+id = "0qkOQIFHh-7vFjY1t-6_t"
+uri = "file://src/assets/images/cs-cyber.png"
+type = "image"
+title = "cybersecurity shield"
+
+[[generated]]
+id = "1T3-2iu90IRMoAhoaiboP"
+uri = "file://src/assets/images/bts-alternance.png"
+type = "image"
+title = "bts alternance workplace"
